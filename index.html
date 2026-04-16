@@ -23,12 +23,12 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
-body{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
+body{padding-top:env(safe-area-inset-top);padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px;}
 
 /* AUTH */
-#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;}
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(32px + env(safe-area-inset-top)) 24px calc(32px + env(safe-area-inset-bottom));}
 .auth-logo{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:.06em;color:var(--lime);line-height:1;}
 .auth-tag{color:var(--text2);font-size:14px;margin-bottom:40px;margin-top:4px;}
 .auth-tabs{display:flex;gap:4px;background:var(--bg3);border-radius:12px;padding:4px;margin-bottom:24px;width:100%;max-width:340px;}
@@ -52,7 +52,7 @@ body{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
 .page.active{display:block;}
 
 /* NAV */
-.nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(13,17,33,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));background:rgba(13,17,33,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);align-items:stretch;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
 .nav-btn svg{width:22px;height:22px;stroke-width:1.8;}
 .nav-btn.active{color:var(--lime);}
@@ -135,7 +135,7 @@ body{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
 /* WEIGHT MODAL */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
 .modal-ov.open{opacity:1;pointer-events:all;}
-.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:430px;transform:translateY(20px);transition:transform .25s;}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:28px 24px calc(40px + env(safe-area-inset-bottom));width:100%;max-width:430px;transform:translateY(20px);transition:transform .25s;}
 .modal-ov.open .modal-box{transform:translateY(0);}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;margin-bottom:4px;}
 .modal-sub{color:var(--text2);font-size:13px;margin-bottom:20px;}
@@ -149,7 +149,7 @@ body{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
 /* EDIT MODAL */
 .edit-ov{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;flex-direction:column;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s;}
 .edit-ov.open{opacity:1;pointer-events:all;}
-.edit-box{min-height:100%;padding:24px 20px 60px;max-width:430px;margin:0 auto;width:100%;}
+.edit-box{min-height:100%;padding:calc(24px + env(safe-area-inset-top)) 20px calc(60px + env(safe-area-inset-bottom));max-width:430px;margin:0 auto;width:100%;}
 .edit-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .edit-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.04em;}
 .close-edit{padding:8px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
@@ -229,7 +229,7 @@ canvas{width:100%;display:block;}
 .ex-item.pop{animation:pop .25s ease;}
 
 /* TOAST */
-.toast{position:fixed;bottom:calc(var(--nav-h)+12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border);border-radius:40px;padding:10px 20px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast{position:fixed;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border);border-radius:40px;padding:10px 20px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:300;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .divider{height:1px;background:var(--border);margin:20px 0;}
 </style>
@@ -472,47 +472,47 @@ const WORKOUT_DAYS=[1,2,3,4,5]; // Mon-Fri
 // ═══════════════════════════════════════════
 const DEF_WO={
   1:{name:"Chest & Triceps",color:"#ff8c42",exercises:[
-    {name:"Barbell Bench Press",sets:4,reps:"8",note:"Flat bench, grip just outside shoulder-width, lower to chest"},
-    {name:"Incline Dumbbell Press",sets:3,reps:"10",note:"30–45° incline, elbows at 45°, squeeze at top"},
-    {name:"Dumbbell Chest Flyes",sets:3,reps:"12",note:"Wide arc, feel the stretch, light weight"},
-    {name:"Close-Grip Bench Press",sets:3,reps:"10",note:"Narrow grip, elbows tucked — pure tricep work"},
-    {name:"EZ Bar Skull Crushers",sets:3,reps:"12",note:"Slow descent toward forehead, elbows stay fixed"},
-    {name:"Overhead Tricep Extension",sets:3,reps:"12",note:"Dumbbell or EZ bar, elbows tight to head"},
+    {name:"Barbell Bench Press",sets:4,reps:"8-10",note:"3s eccentric, pause at chest — maximum pec stretch for hypertrophy"},
+    {name:"Incline Dumbbell Press",sets:3,reps:"10-12",note:"30-45° incline, wide elbows, deep stretch at bottom every rep"},
+    {name:"Dumbbell Chest Flyes",sets:3,reps:"12-15",note:"Wide arc to deep stretch, squeeze at top — lighter weight, feel the pec"},
+    {name:"Dumbbell Pullover",sets:3,reps:"12",note:"Lat/chest stretch, breathe deep at bottom, feel the ribcage expand"},
+    {name:"Close-Grip Bench Press",sets:3,reps:"10-12",note:"Elbows at 45°, 2s eccentric — tricep stretch at bottom is key"},
+    {name:"EZ Bar Skull Crushers",sets:3,reps:"12-15",note:"Slow descent toward forehead, full overhead stretch, squeeze hard at top"},
   ]},
   2:{name:"Back & Biceps",color:"#4ecdc4",exercises:[
-    {name:"Barbell Deadlift",sets:4,reps:"6",note:"Hinge at hips, flat back, drive through the floor"},
-    {name:"Barbell Bent-Over Row",sets:4,reps:"8",note:"Overhand grip, pull to lower chest, back parallel"},
-    {name:"Dumbbell Row",sets:3,reps:"10 ea",note:"Brace on bench, pull elbow to ceiling, full stretch"},
-    {name:"EZ Bar Bicep Curl",sets:3,reps:"10",note:"Strict form, no swinging, full range of motion"},
-    {name:"Incline Dumbbell Curl",sets:3,reps:"12",note:"Bench at 45°, great stretch at the bottom"},
-    {name:"Hammer Curl",sets:3,reps:"12",note:"Neutral grip, targets the brachialis for arm thickness"},
+    {name:"Barbell Bent-Over Row",sets:4,reps:"8-10",note:"Overhand grip, pull to lower chest, retract scapula fully at top"},
+    {name:"Barbell Deadlift",sets:3,reps:"6-8",note:"Hip hinge, neutral spine, drive floor away — back thickness builder"},
+    {name:"Dumbbell Row",sets:3,reps:"10-12",note:"Brace on bench, full stretch at bottom, pull elbow past torso, 1s hold"},
+    {name:"EZ Bar Bicep Curl",sets:4,reps:"10-12",note:"3s eccentric, full ROM — lower all the way for max stretch at bottom"},
+    {name:"Incline Dumbbell Curl",sets:3,reps:"12-15",note:"Arms hang behind body at 45° — maximizes long-head bicep stretch"},
+    {name:"Hammer Curl",sets:3,reps:"12-15",note:"Neutral grip, brachialis emphasis adds serious arm thickness"},
   ]},
   3:{name:"Leg Day",color:"#c8f135",exercises:[
-    {name:"Barbell Back Squat",sets:4,reps:"8",note:"Bar on traps, squat to parallel or below, knees out"},
-    {name:"Romanian Deadlift",sets:3,reps:"10",note:"Hamstring stretch, soft bend in knee, flat back"},
-    {name:"Barbell Front Squat",sets:3,reps:"8",note:"Elbows high, upright torso, more quad emphasis"},
-    {name:"Dumbbell Walking Lunge",sets:3,reps:"10 ea",note:"Long stride, front knee tracks over ankle"},
-    {name:"Dumbbell Romanian Deadlift",sets:3,reps:"12",note:"Single leg variation option for balance work"},
-    {name:"Standing Calf Raises",sets:4,reps:"15",note:"Full stretch at bottom, full flex at top — pause both ends"},
+    {name:"Barbell Back Squat",sets:4,reps:"8-10",note:"ATG or below parallel, 3s eccentric — maximum quad stretch every rep"},
+    {name:"Romanian Deadlift",sets:4,reps:"10-12",note:"3s eccentric, feel hamstrings lengthen fully, soft knee bend, flat back"},
+    {name:"Bulgarian Split Squat",sets:3,reps:"10-12",note:"Rear foot elevated on bench, DBs in hand — stretch at bottom is the goal"},
+    {name:"Dumbbell Walking Lunge",sets:3,reps:"12",note:"Long stride, knee nearly touches floor, front knee over ankle"},
+    {name:"Dumbbell Romanian Deadlift",sets:3,reps:"12-15",note:"Single leg or bilateral — slow eccentric, feel every inch of hamstring stretch"},
+    {name:"Standing Calf Raises",sets:4,reps:"15-20",note:"3s eccentric, full bottom stretch, 1s pause at top — calves need volume"},
   ]},
   4:{name:"Shoulders & Core",color:"#f7c59f",exercises:[
-    {name:"Barbell Overhead Press",sets:4,reps:"8",note:"Standing, bar from rack, press vertical, core tight"},
-    {name:"Dumbbell Lateral Raise",sets:3,reps:"15",note:"Lead with elbows, stop at shoulder height, slow eccentric"},
-    {name:"Dumbbell Front Raise",sets:3,reps:"12",note:"Alternate arms, stop at shoulder height"},
-    {name:"Rear Delt Dumbbell Fly",sets:3,reps:"12",note:"Bent over, squeeze shoulder blades hard at top"},
-    {name:"Plank",sets:3,reps:"45 sec",note:"Neutral spine, glutes squeezed, breathe steadily"},
-    {name:"Hanging Leg Raises",sets:3,reps:"12",note:"Control the swing, exhale and crunch at top"},
-    {name:"EZ Bar Landmine Twist",sets:3,reps:"10 ea",note:"Rotational core, brace hard, controlled movement"},
+    {name:"Dumbbell Shoulder Press",sets:4,reps:"10-12",note:"Neutral grip, stop just below lockout — constant tension for hypertrophy"},
+    {name:"Dumbbell Lateral Raise",sets:4,reps:"15-20",note:"Lead with pinky-up elbow, 3s eccentric — medial delt is the goal here"},
+    {name:"Rear Delt Dumbbell Fly",sets:3,reps:"15",note:"Bent over 45°, arms wide, squeeze rhomboids hard at top of every rep"},
+    {name:"Barbell Overhead Press",sets:3,reps:"8-10",note:"Standing, core braced — full ROM, touches upper chest at bottom"},
+    {name:"Dumbbell Shrugs",sets:3,reps:"15",note:"Roll back then up, 2s pause at peak — trap fullness builder"},
+    {name:"Ab Wheel Rollout",sets:3,reps:"10-12",note:"Slow extension, brace hard throughout, never let lower back arch"},
+    {name:"Weighted Plank",sets:3,reps:"45 sec",note:"Hollow body, glutes squeezed, breathe steadily — plate on back if possible"},
   ]},
   5:{name:"Arms & Abs",color:"#b88cfc",exercises:[
-    {name:"Barbell Curl",sets:4,reps:"10",note:"Strict form, elbows fixed at sides, full ROM"},
-    {name:"EZ Bar Preacher Curl",sets:3,reps:"12",note:"Bench or arm pad, great peak contraction"},
-    {name:"Incline Dumbbell Curl",sets:3,reps:"12",note:"Arms fall back, massive bicep stretch"},
-    {name:"Close-Grip Bench Press",sets:4,reps:"10",note:"Elbows at 45°, great compound tricep builder"},
-    {name:"EZ Bar Skull Crushers",sets:3,reps:"12",note:"Slow descent, pause at bottom, squeeze at top"},
-    {name:"Overhead EZ Bar Extension",sets:3,reps:"12",note:"Seated, elbows tight, full overhead stretch"},
-    {name:"Ab Wheel Rollout",sets:3,reps:"10",note:"Slow, stop before lower back arches"},
-    {name:"Weighted Crunches",sets:3,reps:"20",note:"Hold plate on chest, exhale at top"},
+    {name:"Barbell Curl",sets:4,reps:"10-12",note:"3s eccentric, full wrist supination at top — no swinging, strict form"},
+    {name:"EZ Bar Preacher Curl",sets:3,reps:"12-15",note:"Arm pad or incline bench, full ROM — massive peak contraction at top"},
+    {name:"Dumbbell Concentration Curl",sets:3,reps:"12",note:"Elbow braced on knee, full ROM, squeeze bicep as hard as possible at top"},
+    {name:"Close-Grip Bench Press",sets:4,reps:"10-12",note:"Elbows tucked, 2s descent — feel the tricep stretch fully at bottom"},
+    {name:"EZ Bar Skull Crushers",sets:3,reps:"12-15",note:"Slow eccentric, elbows shoulder-width — long head stretch is the priority"},
+    {name:"Overhead Dumbbell Extension",sets:3,reps:"12-15",note:"Seated or standing, elbows tight to head — full long-head stretch at bottom"},
+    {name:"Ab Wheel Rollout",sets:3,reps:"10-12",note:"Slow and controlled, exhale on return, stop before lower back arches"},
+    {name:"Hanging Leg Raises",sets:3,reps:"12-15",note:"Dead hang start, exhale and crunch at top, controlled descent every rep"},
   ]},
 };
 
@@ -560,7 +560,7 @@ function doAuth(){
 }
 function doSignOut(){
   if(!confirm('Sign out?'))return;
-  if(LISTENER){db.ref(`u/${UID}`).off();LISTENER=null;}
+  if(LISTENER){LISTENER.off('value');LISTENER=null;}
   auth.signOut();
 }
 
@@ -592,7 +592,13 @@ auth.onAuthStateChanged(u=>{
 function uref(p=''){return db.ref(`u/${UID}${p?'/'+p:''}`);}
 
 function initData(){
-  uref().once('value').then(snap=>{
+  // Clean up any existing listener before attaching a new one
+  if(LISTENER){LISTENER.off('value');LISTENER=null;}
+
+  LISTENER=uref();
+  let firstLoad=true;
+
+  LISTENER.on('value',snap=>{
     const r=snap.val()||{};
     D.meta=r.m||{install:today(),s:{mo:'08:00',no:'12:00',ev:'19:00'}};
     D.logs=r.l||{};
@@ -603,18 +609,25 @@ function initData(){
       uref('m/install').set(today());
     }
     buildWorkouts();
-    renderHome();
-    renderSettings();
-    schedNotifs();
-  });
-  // Live listener
-  uref().on('value',snap=>{
-    const r=snap.val()||{};
-    D.meta=r.m||D.meta;
-    D.logs=r.l||{};
-    D.weights=r.w||{};
-    D.wo=r.o||{};
-    buildWorkouts();
+    if(firstLoad){
+      firstLoad=false;
+      renderHome();
+      renderSettings();
+      schedNotifs();
+    } else {
+      // Re-render whatever page is currently visible so live data always shows
+      const activePage=document.querySelector('.page.active');
+      if(activePage){
+        const id=activePage.id.replace('page-','');
+        if(id==='home') renderHome();
+        else if(id==='workout') renderWorkout();
+        else if(id==='progress') renderProgress();
+        else if(id==='settings') renderSettings();
+      }
+    }
+  },err=>{
+    console.error('Firebase listener error:',err);
+    showToast('⚠️ Connection error — data may not sync');
   });
 }
 
@@ -635,22 +648,22 @@ function getLog(ds){return D.logs[lk(ds)]||null;}
 
 function setLog(ds,obj){
   const k=lk(ds);
-  uref(`l/${k}`).set(obj);
   D.logs[k]=obj;
+  uref(`l/${k}`).set(obj).catch(()=>showToast('⚠️ Save failed — check connection'));
 }
 
 function setWeight(exk,ds,lbs){
   const k=lk(ds);
-  uref(`w/${exk}/${k}`).set(lbs);
   if(!D.weights[exk]) D.weights[exk]={};
   D.weights[exk][k]=lbs;
+  uref(`w/${exk}/${k}`).set(lbs).catch(()=>showToast('⚠️ Weight save failed — check connection'));
 }
 
 function saveWoEdit(dow,name,color,exArr){
   const ov={n:name,c:color,e:exArr.map(x=>({n:x.name,s:x.sets,r:x.reps,t:x.note||''}))};
-  uref(`o/${dow}`).set(ov);
   D.wo[dow]=ov;
   buildWorkouts();
+  uref(`o/${dow}`).set(ov).catch(()=>showToast('⚠️ Workout save failed — check connection'));
 }
 
 // ═══════════════════════════════════════════
