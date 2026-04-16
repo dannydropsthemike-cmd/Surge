@@ -389,7 +389,7 @@ canvas{width:100%;display:block;}
     Clear All My Data
   </button>
   <div class="divider"></div>
-  <div style="text-align:center;font-size:12px;color:var(--text3);padding-bottom:8px">Surge — Train every day 💪<br><span style="font-size:11px">5-Day Split · Sat & Sun Rest</span></div>
+  <div style="text-align:center;font-size:12px;color:var(--text3);padding-bottom:8px">Surge — Train every day 💪<br><span style="font-size:11px">5-Day Split · Tue & Thu Rest</span></div>
 </div>
 
 </div><!-- #app -->
@@ -462,9 +462,9 @@ const db=firebase.database();
 let UID=null, LISTENER=null;
 let D={ meta:{install:null,s:{mo:'08:00',no:'12:00',ev:'19:00'}}, logs:{}, weights:{}, wo:{} };
 
-// Rest days: Sun=0, Sat=6
-const REST=new Set([0,6]);
-const WORKOUT_DAYS=[1,2,3,4,5]; // Mon-Fri
+// Rest days: Tue=2, Thu=4
+const REST=new Set([2,4]);
+const WORKOUT_DAYS=[0,1,3,5,6]; // Sun, Mon, Wed, Fri, Sat
 
 // ═══════════════════════════════════════════
 //  DEFAULT WORKOUTS
@@ -479,7 +479,7 @@ const DEF_WO={
     {name:"Close-Grip Bench Press",sets:3,reps:"10-12",note:"Elbows at 45°, 2s eccentric — tricep stretch at bottom is key"},
     {name:"EZ Bar Skull Crushers",sets:3,reps:"12-15",note:"Slow descent toward forehead, full overhead stretch, squeeze hard at top"},
   ]},
-  2:{name:"Back & Biceps",color:"#4ecdc4",exercises:[
+  3:{name:"Back & Biceps",color:"#4ecdc4",exercises:[
     {name:"Barbell Bent-Over Row",sets:4,reps:"8-10",note:"Overhand grip, pull to lower chest, retract scapula fully at top"},
     {name:"Barbell Deadlift",sets:3,reps:"6-8",note:"Hip hinge, neutral spine, drive floor away — back thickness builder"},
     {name:"Dumbbell Row",sets:3,reps:"10-12",note:"Brace on bench, full stretch at bottom, pull elbow past torso, 1s hold"},
@@ -487,7 +487,7 @@ const DEF_WO={
     {name:"Incline Dumbbell Curl",sets:3,reps:"12-15",note:"Arms hang behind body at 45° — maximizes long-head bicep stretch"},
     {name:"Hammer Curl",sets:3,reps:"12-15",note:"Neutral grip, brachialis emphasis adds serious arm thickness"},
   ]},
-  3:{name:"Leg Day",color:"#c8f135",exercises:[
+  5:{name:"Leg Day",color:"#c8f135",exercises:[
     {name:"Barbell Back Squat",sets:4,reps:"8-10",note:"ATG or below parallel, 3s eccentric — maximum quad stretch every rep"},
     {name:"Romanian Deadlift",sets:4,reps:"10-12",note:"3s eccentric, feel hamstrings lengthen fully, soft knee bend, flat back"},
     {name:"Bulgarian Split Squat",sets:3,reps:"10-12",note:"Rear foot elevated on bench, DBs in hand — stretch at bottom is the goal"},
@@ -495,7 +495,7 @@ const DEF_WO={
     {name:"Dumbbell Romanian Deadlift",sets:3,reps:"12-15",note:"Single leg or bilateral — slow eccentric, feel every inch of hamstring stretch"},
     {name:"Standing Calf Raises",sets:4,reps:"15-20",note:"3s eccentric, full bottom stretch, 1s pause at top — calves need volume"},
   ]},
-  4:{name:"Shoulders & Core",color:"#f7c59f",exercises:[
+  6:{name:"Shoulders & Core",color:"#f7c59f",exercises:[
     {name:"Dumbbell Shoulder Press",sets:4,reps:"10-12",note:"Neutral grip, stop just below lockout — constant tension for hypertrophy"},
     {name:"Dumbbell Lateral Raise",sets:4,reps:"15-20",note:"Lead with pinky-up elbow, 3s eccentric — medial delt is the goal here"},
     {name:"Rear Delt Dumbbell Fly",sets:3,reps:"15",note:"Bent over 45°, arms wide, squeeze rhomboids hard at top of every rep"},
@@ -504,7 +504,7 @@ const DEF_WO={
     {name:"Ab Wheel Rollout",sets:3,reps:"10-12",note:"Slow extension, brace hard throughout, never let lower back arch"},
     {name:"Weighted Plank",sets:3,reps:"45 sec",note:"Hollow body, glutes squeezed, breathe steadily — plate on back if possible"},
   ]},
-  5:{name:"Arms & Abs",color:"#b88cfc",exercises:[
+  0:{name:"Arms & Abs",color:"#b88cfc",exercises:[
     {name:"Barbell Curl",sets:4,reps:"10-12",note:"3s eccentric, full wrist supination at top — no swinging, strict form"},
     {name:"EZ Bar Preacher Curl",sets:3,reps:"12-15",note:"Arm pad or incline bench, full ROM — massive peak contraction at top"},
     {name:"Dumbbell Concentration Curl",sets:3,reps:"12",note:"Elbow braced on knee, full ROM, squeeze bicep as hard as possible at top"},
