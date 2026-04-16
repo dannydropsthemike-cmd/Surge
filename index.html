@@ -53,6 +53,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:calc(var(--nav-h) + env
 
 /* NAV */
 .nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));background:rgba(13,17,33,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);align-items:stretch;}
+.nav::after{content:'';position:fixed;bottom:calc(-1 * env(safe-area-inset-bottom));left:0;right:0;height:env(safe-area-inset-bottom);background:rgba(13,17,33,0.97);z-index:99;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
 .nav-btn svg{width:22px;height:22px;stroke-width:1.8;}
 .nav-btn.active{color:var(--lime);}
