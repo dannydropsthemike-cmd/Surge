@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Surge — Workout Tracker</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,6 +22,10 @@
   --radius:18px;--nav-h:72px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
+*:not(input):not(textarea):not([contenteditable]){
+  -webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
+}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
 body{padding-top:env(safe-area-inset-top);padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
 ::-webkit-scrollbar{width:4px;}
