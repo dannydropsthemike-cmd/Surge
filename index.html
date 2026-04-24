@@ -151,6 +151,16 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:calc(var(--nav-h) + env
 .modal-save{flex:2;padding:16px;background:var(--lime);border:none;border-radius:14px;color:var(--bg);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em;cursor:pointer;transition:all .2s;}
 .modal-save:hover{background:var(--lime2);}
 
+/* DAY NAV */
+.day-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;}
+.day-nav-btn{width:36px;height:36px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.day-nav-btn:hover{border-color:var(--lime);color:var(--lime);}
+.day-nav-btn:disabled{opacity:.25;cursor:default;}
+.day-nav-center{flex:1;text-align:center;}
+.day-nav-lbl{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em;line-height:1;}
+.day-nav-sub{font-size:11px;color:var(--text2);margin-top:1px;}
+.missed-banner{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--coral);text-align:center;display:none;}
+
 /* EDIT MODAL */
 .edit-ov{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;flex-direction:column;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s;}
 .edit-ov.open{opacity:1;pointer-events:all;}
@@ -295,6 +305,15 @@ canvas{width:100%;display:block;}
       <button class="edit-btn" onclick="openEdit()">✏️ Edit</button>
     </div>
   </div>
+  <div class="day-nav">
+    <button class="day-nav-btn" id="wo-prev-btn" onclick="woNavDay(-1)">‹</button>
+    <div class="day-nav-center">
+      <div class="day-nav-lbl" id="wo-nav-lbl">TODAY</div>
+      <div class="day-nav-sub" id="wo-nav-date">—</div>
+    </div>
+    <button class="day-nav-btn" id="wo-next-btn" onclick="woNavDay(1)">›</button>
+  </div>
+  <div class="missed-banner" id="missed-banner">📅 Viewing a past day — you can still log it below</div>
   <div id="rest-view" class="card rest-card" style="display:none">
     <div class="rest-emoji">😴</div><div class="rest-title">Rest Day</div>
     <div class="rest-sub">Recovery is part of the gains.<br>Sleep, eat, hydrate.</div>
@@ -466,6 +485,7 @@ const db=firebase.database();
 // ═══════════════════════════════════════════
 let UID=null, LISTENER=null;
 let D={ meta:{install:null,s:{mo:'08:00',no:'12:00',ev:'19:00'}}, logs:{}, weights:{}, wo:{} };
+let woOffset=0; // 0=today, -1=yesterday, etc.
 
 // Rest days: Tue=2, Thu=4
 const REST=new Set([2,4]);
@@ -625,7 +645,7 @@ function initData(){
       if(activePage){
         const id=activePage.id.replace('page-','');
         if(id==='home') renderHome();
-        else if(id==='workout') renderWorkout();
+        else if(id==='workout') renderWorkout(); // preserves woOffset
         else if(id==='progress') renderProgress();
         else if(id==='settings') renderSettings();
       }
@@ -680,7 +700,7 @@ function showPage(n){
   document.getElementById('page-'+n).classList.add('active');
   document.getElementById('nav-'+n).classList.add('active');
   if(n==='home') renderHome();
-  if(n==='workout') renderWorkout();
+  if(n==='workout'){woOffset=0;renderWorkout();}
   if(n==='progress') renderProgress();
   if(n==='settings') renderSettings();
 }
@@ -779,8 +799,35 @@ function calcStats(){
 // ═══════════════════════════════════════════
 //  WORKOUT PAGE
 // ═══════════════════════════════════════════
+function woDate(){
+  const d=new Date();d.setDate(d.getDate()+woOffset);return d;
+}
+function woDateStr(){return DS(woDate());}
+
+function woNavDay(delta){
+  // Can't go into the future beyond today
+  if(woOffset+delta>0)return;
+  // Don't go back more than 14 days
+  if(woOffset+delta<-14)return;
+  woOffset+=delta;
+  renderWorkout();
+}
+
 function renderWorkout(){
-  const d=new Date().getDay(),t=today(),wo=WO[d];
+  const now=woDate(),d=now.getDay(),t=woDateStr(),isToday=woOffset===0;
+  // Update nav bar
+  const lbl=document.getElementById('wo-nav-lbl');
+  const sub=document.getElementById('wo-nav-date');
+  const banner=document.getElementById('missed-banner');
+  if(isToday){lbl.textContent='TODAY';}
+  else if(woOffset===-1){lbl.textContent='YESTERDAY';}
+  else{lbl.textContent=DFUL[d].toUpperCase();}
+  sub.textContent=`${MSHT[now.getMonth()]} ${now.getDate()}`;
+  document.getElementById('wo-prev-btn').disabled=woOffset<=-14;
+  document.getElementById('wo-next-btn').disabled=isToday;
+  banner.style.display=isToday?'none':'block';
+
+  const wo=WO[d];
   document.getElementById('w-colorbar').style.background=wo?wo.color:'#4a5470';
   if(REST.has(d)||!wo){
     document.getElementById('rest-view').style.display='block';
@@ -825,14 +872,16 @@ function renderWorkout(){
     cb.disabled=true;sb.style.display='none';
   } else {
     cb.className='cmp-btn';
-    cb.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Mark Workout Complete';
+    const btnLabel=isToday?'Mark Workout Complete':`Log ${DFUL[d]} as Complete`;
+    cb.innerHTML=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ${btnLabel}`;
     cb.disabled=false;
-    sb.className='sick-btn';sb.innerHTML='🤒 Can\'t complete — log as sick/injured';sb.disabled=false;sb.style.display='flex';
+    const sickLabel=isToday?`🤒 Can't complete — log as sick/injured`:`🤒 Log ${DFUL[d]} as sick/injured`;
+    sb.className='sick-btn';sb.innerHTML=sickLabel;sb.disabled=false;sb.style.display='flex';
   }
 }
 
 function toggleEx(i){
-  const d=new Date().getDay(),wo=WO[d],t=today();if(!wo)return;
+  const now=woDate(),d=now.getDay(),wo=WO[d],t=woDateStr();if(!wo)return;
   const log=getLog(t)||{c:0,s:0,k:new Array(wo.exercises.length).fill(0)};
   const checks=[...(log.k&&log.k.length===wo.exercises.length?log.k:new Array(wo.exercises.length).fill(0))];
   const wasChk=!!checks[i];
@@ -847,15 +896,18 @@ function toggleEx(i){
 function updateProg(chk,tot){document.getElementById('w-prog').style.width=(chk.filter(Boolean).length/tot*100)+'%';}
 
 function markComplete(){
-  const d=new Date().getDay(),wo=WO[d];if(!wo)return;
-  const t=today(),n=wo.exercises.length;
+  const now=woDate(),d=now.getDay(),wo=WO[d];if(!wo)return;
+  const t=woDateStr(),n=wo.exercises.length;
   setLog(t,{c:1,s:0,k:new Array(n).fill(1)});
-  renderWorkout();renderHome();showToast('⚡ Workout logged! Great job!');
+  renderWorkout();renderHome();
+  const msg=woOffset===0?'⚡ Workout logged! Great job!':`⚡ ${DFUL[d]} logged as complete!`;
+  showToast(msg);
 }
 
 function logSick(){
-  if(!confirm('Log today as sick/injured?\n\nThis is fully exempt — no impact on streak, rate, or progress.'))return;
-  const d=new Date().getDay(),wo=WO[d],t=today();
+  const now=woDate(),d=now.getDay(),wo=WO[d],t=woDateStr();
+  const dayName=woOffset===0?'today':DFUL[d];
+  if(!confirm(`Log ${dayName} as sick/injured?\n\nThis is fully exempt — no impact on streak, rate, or progress.`))return;
   setLog(t,{c:0,s:1,k:new Array(wo?wo.exercises.length:0).fill(0)});
   renderWorkout();renderHome();showToast('🤒 Logged as exempt. Rest up!');
 }
