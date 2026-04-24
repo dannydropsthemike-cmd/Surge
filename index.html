@@ -633,6 +633,16 @@ function initData(){
       D.meta.install=today();
       uref('m/install').set(today());
     }
+    // Auto-adjust install date to earliest log so past data is never hidden
+    const logKeys=Object.keys(D.logs);
+    if(logKeys.length){
+      const earliest=logKeys.sort()[0]; // format "20250415"
+      const earliestDs=lkds(earliest);   // "2025-04-15"
+      if(!D.meta.install||earliestDs<D.meta.install){
+        D.meta.install=earliestDs;
+        uref('m/install').set(earliestDs);
+      }
+    }
     buildWorkouts();
     if(firstLoad){
       firstLoad=false;
