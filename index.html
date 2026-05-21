@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday — Legs Workout Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1 id="workout-title">Friday — Legs</h1>
+            <p class="greeting" id="greeting-text">Loading...</p>
+        </header>
+
+        <main class="main-content">
+            <div id="workouts-tab" class="tab-content active">
+                <h2 style="margin-bottom: 16px; color: var(--text-main);">Today's Workout</h2>
+                <div id="workout-list" class="workout-list">
+                    <!-- Workout items will be rendered here -->
+                </div>
+            </div>
+
+            <div id="stats-tab" class="tab-content">
+                <h2 style="margin-bottom: 16px; color: var(--text-main);">Progress</h2>
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Completion Rate</h4>
+                            <div class="value" id="completion-rate">0%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Total Workouts</h4>
+                            <div class="value" id="total-workouts">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Completed</h4>
+                            <div class="value" id="completed-workouts">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Skipped</h4>
+                            <div class="value" id="skipped-workouts">0</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Workout Progress</h3>
+                        <div class="chart-controls">
+                            <select id="workout-select" class="chart-select" onchange="renderChart()">
+                                <option value="all">All Workouts</option>
+                            </select>
+                        </div>
+                        <canvas id="progress-chart" class="chart-canvas"></canvas>
+                    </div>
+
+                    <div class="calendar-container">
+                        <h3>Calendar</h3>
+                        <div id="calendar" class="calendar">
+                            <!-- Calendar days will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-tab="workouts" id="nav-workouts">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
+                <span>Workouts</span>
+            </button>
+            <button class="nav-btn" data-tab="stats" id="nav-stats">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
+                <span>Stats</span>
+            </button>
+        </nav>
+    </div>
+
+    <div id="workout-modal" class="modal">
+        <div class="modal-content">
+            <h2>Log Workout</h2>
+            <label for="workout-name">Workout Name</label>
+            <input type="text" id="workout-name" placeholder="e.g., Leg Press">
+            
+            <label for="workout-sets">Sets</label>
+            <input type="text" id="workout-sets" placeholder="e.g., 4 sets of 8-12">
+            
+            <label for="workout-weight">Weight</label>
+            <input type="text" id="workout-weight" placeholder="e.g., 100 lbs">
+            
+            <label for="workout-status">Status</label>
+            <select id="workout-status">
+                <option value="completed">Completed</option>
+                <option value="half">Half</option>
+                <option value="skipped">Skipped</option>
+            </select>
+            
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button id="save-workout" class="btn btn-primary">Save</button>
+                <button id="cancel-workout" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
